@@ -12,6 +12,10 @@ export default async function handler(req, res) {
 
                         const API_KEY = process.env.YOUTUBE_API_KEY;
 
+                        if (!API_KEY) {
+                            return res.status(500).json({ error: 'API key missing' });
+                        }
+
                             const ytRes = await fetch(
                                       `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${encodeURIComponent(query)}&maxResults=10&key=${API_KEY}`
                             );
