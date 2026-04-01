@@ -4,13 +4,13 @@ export default async function handler(req, res) {
       }
 
         try {
-                const { query } = req.body;
+                const { query, userId } = req.body;
 
                     if (!query) {
                               return res.status(400).json({ error: 'Query is required' });
                     }
 
-                        const API_KEY = process.env.YOUTUBE_API_KEY;
+                        const API_KEY = process.env.GOOGLE_API_KEY || process.env.YOUTUBE_API_KEY;
 
                         if (!API_KEY) {
                             return res.status(500).json({ error: 'API key missing' });
@@ -30,7 +30,13 @@ export default async function handler(req, res) {
                                                                       score: Math.floor(Math.random() * 100)
                                     })) || [];
 
-                                        res.status(200).json({ results });
+                                        res.status(200).json({
+                                            creators: results,
+                                            searchesUsed: 1,
+                                            searchesLeft: 9,
+                                            isPro: false,
+                                            totalHidden: 0
+                                        });
 
         } catch (error) {
                 console.error(error);
