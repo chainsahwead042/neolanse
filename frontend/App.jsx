@@ -130,36 +130,36 @@ export default function App() {
       <div className="relative z-10">
 
         {/* ─── HEADER ──────────────────────────────────────── */}
-        <header className="border-b border-yellow-900/30 bg-black/60 backdrop-blur-sm sticky top-0 z-20">
+        <header className="border-b border-border bg-surface sticky top-0 z-20 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="font-display text-3xl neon-text tracking-widest neon-flicker-slow">⚡ NEOLANSE</div>
-              <div className="hidden sm:block text-xs font-mono text-yellow-800 uppercase tracking-widest border-l border-yellow-900/40 pl-3">
+              <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-display">NEOLANSE</div>
+              <div className="hidden sm:block text-xs font-medium text-muted uppercase tracking-widest border-l border-border2 pl-3">
                 YouTube Lead Engine
               </div>
             </div>
             <div className="flex items-center gap-3">
               {!isPro && (
                 <div className="hidden sm:flex items-center gap-2">
-                  <div className="w-24 h-1 bg-yellow-900/30 rounded-full overflow-hidden">
+                  <div className="w-24 h-1 bg-border rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-yellow-400 rounded-full transition-all"
+                      className="h-full bg-accent rounded-full transition-all"
                       style={{ width: `${Math.min(100, ((FREE_LIMIT - searchesLeft) / FREE_LIMIT) * 100)}%` }}
                     />
                   </div>
-                  <span className="text-xs font-mono text-yellow-700">
+                  <span className="text-xs font-medium text-muted2">
                     {searchesLeft} search{searchesLeft !== 1 ? 'es' : ''} left
                   </span>
                 </div>
               )}
               {isPro && (
-                <span className="text-xs font-mono text-yellow-500 border border-yellow-700 px-2 py-0.5 rounded">
-                  ⚡ PRO
+                <span className="text-xs font-medium text-accent border border-accent px-2 py-0.5 rounded">
+                  PRO
                 </span>
               )}
               <button
                 onClick={() => setShowPricing(true)}
-                className="neon-btn neon-btn-primary px-4 py-2 text-sm"
+                className="btn btn-primary px-4 py-2 text-sm"
               >
                 {isPro ? 'Manage Plan' : 'Get Pro →'}
               </button>
@@ -169,29 +169,28 @@ export default function App() {
 
         {/* ─── HERO ────────────────────────────────────────── */}
         <section className="max-w-4xl mx-auto px-4 pt-16 pb-10 text-center">
-          <div className="font-display text-6xl md:text-8xl neon-text tracking-widest mb-3 fade-in-up">
+          <div className="text-5xl md:text-7xl font-bold tracking-tight mb-3 text-white fade-in-up">
             FIND YOUR LEADS
           </div>
-          <p className="text-gray-500 font-mono text-sm mb-2 fade-in-up fade-in-up-delay-1">
+          <p className="text-muted font-medium text-sm mb-2 fade-in-up fade-in-up-delay-1">
             Describe the creator you want in plain English. We extract their contacts.
           </p>
           <div className="spark-line w-32 mx-auto mb-8 fade-in-up fade-in-up-delay-2" />
 
           {/* ─── SEARCH BOX ───────────────────────────────── */}
-          <div className="flex flex-col sm:flex-row gap-3 neon-border rounded p-1 bg-black/40 fade-in-up fade-in-up-delay-3">
-            <input
+          <div className="flex flex-col sm:flex-row gap-3 rounded-lg p-2 bg-surface2/80 border border-border text-sm fade-in-up fade-in-up-delay-3">            <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && search()}
               placeholder={placeholder}
-              className="neon-input flex-1 px-5 py-4 rounded text-base bg-transparent"
+              className="surface-input flex-1 px-5 py-4 rounded text-base bg-transparent border border-border"
             />
             <button
               onClick={() => search()}
               disabled={loading || !query.trim()}
-              className="neon-btn neon-btn-primary px-8 py-4 text-xl disabled:opacity-40 disabled:cursor-not-allowed"
+              className="btn btn-primary px-8 py-4 text-xl disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {loading ? '...' : '⚡ SEARCH'}
             </button>
@@ -212,7 +211,7 @@ export default function App() {
         </section>
 
         {/* ─── MAIN CONTENT ────────────────────────────────── */}
-        <main className="max-w-7xl mx-auto px-4 pb-16">
+        <main className="surf-card max-w-7xl mx-auto px-6 py-8 pb-16">
 
           {/* Error */}
           {error && (
