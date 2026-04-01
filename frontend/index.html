@@ -1174,7 +1174,7 @@ setInterval(()=>{
 }, 3500)
 
 // Load user status
-fetch(`${API}/user/${userId}`).then(r=>r.json()).then(s=>{userStatus=s;updateStatusUI()}).catch(()=>{})
+fetch(`${API}/user?userId=${userId}`).then(r=>r.json()).then(s=>{userStatus=s;updateStatusUI()}).catch(()=>{})
 
 function updateStatusUI(){
   const isPro = userStatus?.isPro
