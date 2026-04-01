@@ -5,3 +5,5 @@ dist/
 *.log
 .DS_Store
 backend/neolanse.db
+.vercel
+.env*.local
