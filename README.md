@@ -93,3 +93,4 @@ Deploy to Railway, Render, or Fly.io:
 - Set env vars: `YOUTUBE_API_KEY`, `FREEMIUS_SECRET_KEY`, `PORT`
 - Run command: `npm start`
 - No build step needed — `index.html` is served statically by Express
+# Trigger redeploy
