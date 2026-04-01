@@ -123,15 +123,15 @@ export default function App() {
   const isPro = userStatus?.isPro || false
 
   return (
-    <div className="brick-bg min-h-screen relative">
+    <div className="min-h-screen relative bg-black text-white">
       <Particles />
 
       {/* Everything sits above particles */}
       <div className="relative z-10">
 
         {/* ─── HEADER ──────────────────────────────────────── */}
-        <header className="border-b border-border bg-surface sticky top-0 z-20 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <header className="border-b border-border bg-black/95 sticky top-0 z-20 backdrop-blur-sm">
+          <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-display">NEOLANSE</div>
               <div className="hidden sm:block text-xs font-medium text-muted uppercase tracking-widest border-l border-border2 pl-3">
@@ -168,14 +168,14 @@ export default function App() {
         </header>
 
         {/* ─── HERO ────────────────────────────────────────── */}
-        <section className="max-w-4xl mx-auto px-4 pt-16 pb-10 text-center">
-          <div className="text-5xl md:text-7xl font-bold tracking-tight mb-3 text-white fade-in-up">
+        <section className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
+          <div className="text-5xl md:text-7xl font-bold tracking-tight mb-4 text-yellow-300 fade-in-up">
             FIND YOUR LEADS
           </div>
-          <p className="text-muted font-medium text-sm mb-2 fade-in-up fade-in-up-delay-1">
-            Describe the creator you want in plain English. We extract their contacts.
+          <p className="text-yellow-200 font-medium text-lg mb-5 fade-in-up fade-in-up-delay-1">
+            AI-powered creator research for YouTube outreach. Fast, clean, and reliable.
           </p>
-          <div className="spark-line w-32 mx-auto mb-8 fade-in-up fade-in-up-delay-2" />
+          <div className="spark-line w-36 h-1 bg-yellow-600 mx-auto rounded mb-10 fade-in-up fade-in-up-delay-2" />
 
           {/* ─── SEARCH BOX ───────────────────────────────── */}
           <div className="flex flex-col sm:flex-row gap-3 rounded-lg p-2 bg-surface2/80 border border-border text-sm fade-in-up fade-in-up-delay-3">            <input

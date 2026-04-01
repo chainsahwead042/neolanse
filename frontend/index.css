@@ -20,12 +20,21 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: radial-gradient(circle at 20% 20%, rgba(209,84,26,0.15), transparent 35%),
-              linear-gradient(145deg, #0a0a0a 0%, #050505 50%, #0e0e0e 100%);
+  background: #060606;
   color: var(--text);
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+.brick-bg {
+  background: radial-gradient(circle at 25% 20%, rgba(209,84,26,0.10), transparent 45%),
+              radial-gradient(circle at 75% 75%, rgba(255,156,25,0.08), transparent 40%),
+              linear-gradient(180deg, #070707 0%, #0a0a0a 100%);
+}
+
+.brick-bg::before {
+  display: none;
 }
 
 
@@ -81,27 +90,22 @@ body {
   animation: neon-flicker 7s infinite 2s;
 }
 
-/* ─── NEON BORDER ───────────────────────────────────── */
-.neon-border {
-  border: 1px solid var(--neon-dim);
-  box-shadow:
-    0 0 5px rgba(255,215,0,0.2),
-    inset 0 0 5px rgba(255,215,0,0.05);
-  transition: box-shadow 0.3s;
+/* ─── SURFACE BORDER ───────────────────────────────── */
+.neon-border, .surf-border {
+  border: 1px solid var(--border);
+  background: rgba(15,15,15,0.45);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  transition: box-shadow 0.3s, border-color 0.3s;
 }
 
-.neon-border:hover {
-  box-shadow:
-    0 0 12px rgba(255,215,0,0.5),
-    inset 0 0 8px rgba(255,215,0,0.1);
+.neon-border:hover, .surf-border:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+  border-color: var(--accent);
 }
 
 .neon-border-bright {
-  border: 1px solid var(--neon);
-  box-shadow:
-    0 0 8px rgba(255,215,0,0.4),
-    0 0 20px rgba(255,215,0,0.2),
-    inset 0 0 8px rgba(255,215,0,0.05);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 8px rgba(209,84,26,0.5), 0 0 20px rgba(209,84,26,0.2);
 }
 
 /* ─── NEON BUTTON ───────────────────────────────────── */
