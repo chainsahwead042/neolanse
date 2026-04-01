@@ -95,7 +95,7 @@ function scoreCreator(channel, videos) {
     } else if (daysSince < 90) {
       score += 10;
     } else {
-      insights.whatsWrong.push('Inactive channel - hasn't uploaded in months');
+      insights.whatsWrong.push("Inactive channel - hasn't uploaded in months");
       insights.whatToPitch.push('Help them restart content creation');
     }
   } else {
@@ -249,10 +249,10 @@ function parseSubs(str) {
 // ─── ROUTES ────────────────────────────────────────────────────────────────────
 
 // Health check
-app.get('/health', (req, res) => res.json({ ok: true }));
+app.get(['/health','/api/health'], (req, res) => res.json({ ok: true }));
 
 // Search creators
-app.post('/search', async (req, res) => {
+app.post(['/search','/api/search'], async (req, res) => {
   try {
     const { query, userId = 'anon', pageToken } = req.body;
     if (!query) return res.status(400).json({ error: 'Query required' });
@@ -393,7 +393,7 @@ app.post('/search', async (req, res) => {
 });
 
 // Get user status
-app.get('/user/:userId', (req, res) => {
+app.get(['/user/:userId', '/api/user/:userId'], (req, res) => {
   const user = getOrCreateUser(req.params.userId);
   res.json({
     ...user,
@@ -403,7 +403,7 @@ app.get('/user/:userId', (req, res) => {
 });
 
 // CSV export
-app.post('/export', (req, res) => {
+app.post(['/export', '/api/export'], (req, res) => {
   try {
     const { creators, userId = 'anon' } = req.body;
     const user = getOrCreateUser(userId);
