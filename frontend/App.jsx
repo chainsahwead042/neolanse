@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import Particles from './components/Particles.jsx'
-import CreatorTable from './components/CreatorTable.jsx'
-import PricingModal from './components/PricingModal.jsx'
+import Particles from './Particles.jsx'
+import CreatorTable from './CreatorTable.jsx'
+import PricingModal from './PricingModal.jsx'
 
 const API = import.meta.env.VITE_API_URL || '/api'
 const FREE_LIMIT = 10
@@ -9,10 +9,10 @@ const FREE_RESULTS = 5
 
 // Generate a persistent anonymous user ID
 function getUserId() {
-  let id = localStorage.getItem('lanceit_uid')
+  let id = localStorage.getItem('neolanse_uid')
   if (!id) {
     id = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36)
-    localStorage.setItem('lanceit_uid', id)
+    localStorage.setItem('neolanse_uid', id)
   }
   return id
 }
@@ -110,7 +110,7 @@ export default function App() {
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = 'lanceit-leads.csv'
+      a.download = 'neolanse-leads.csv'
       a.click()
       URL.revokeObjectURL(url)
     } catch {
@@ -133,7 +133,7 @@ export default function App() {
         <header className="border-b border-yellow-900/30 bg-black/60 backdrop-blur-sm sticky top-0 z-20">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="font-display text-3xl neon-text tracking-widest neon-flicker-slow">⚡ LANCEIT</div>
+              <div className="font-display text-3xl neon-text tracking-widest neon-flicker-slow">⚡ NEOLANSE</div>
               <div className="hidden sm:block text-xs font-mono text-yellow-800 uppercase tracking-widest border-l border-yellow-900/40 pl-3">
                 YouTube Lead Engine
               </div>
@@ -346,7 +346,7 @@ export default function App() {
 
         {/* ─── FOOTER ──────────────────────────────────────── */}
         <footer className="border-t border-yellow-900/20 py-6 text-center">
-          <div className="font-display text-yellow-900/40 text-lg tracking-widest">LANCEIT</div>
+          <div className="font-display text-yellow-900/40 text-lg tracking-widest">NEOLANSE</div>
           <div className="text-xs font-mono text-gray-700 mt-1">
             Only uses publicly available YouTube data · No CAPTCHA bypass · No scraping of protected content
           </div>

@@ -17,7 +17,7 @@ const FREE_SEARCH_LIMIT = 10;
 const FREE_RESULTS_LIMIT = 5;
 
 // ─── DATABASE SETUP ────────────────────────────────────────────────────────────
-const db = new Database(join(__dirname, 'lanceit.db'));
+const db = new Database(join(__dirname, 'neolanse.db'));
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
@@ -72,33 +72,109 @@ function extractContacts(text) {
 
 function scoreCreator(channel, videos) {
   let score = 0;
+  let insights = {
+    whyGoodClient: [],
+    whatToPitch: [],
+    whatsWrong: []
+  };
+
   const subs = parseInt(channel.subscriberCount || 0);
   const views = parseInt(channel.viewCount || 0);
+  const videoCount = parseInt(channel.statistics?.videoCount || 0);
 
   // Activity score - recent uploads
   if (videos && videos.length > 0) {
     const latestUpload = new Date(videos[0].publishedAt);
     const daysSince = (Date.now() - latestUpload) / (1000 * 60 * 60 * 24);
-    if (daysSince < 7) score += 30;
-    else if (daysSince < 30) score += 20;
-    else if (daysSince < 90) score += 10;
+    if (daysSince < 7) {
+      score += 30;
+      insights.whyGoodClient.push('Very active creator with recent uploads');
+    } else if (daysSince < 30) {
+      score += 20;
+      insights.whyGoodClient.push('Active creator uploading regularly');
+    } else if (daysSince < 90) {
+      score += 10;
+    } else {
+      insights.whatsWrong.push('Inactive channel - hasn't uploaded in months');
+      insights.whatToPitch.push('Help them restart content creation');
+    }
+  } else {
+    insights.whatsWrong.push('No recent videos found');
   }
 
   // Engagement score
   if (subs > 0 && views > 0) {
     const ratio = views / subs;
-    if (ratio > 100) score += 25;
-    else if (ratio > 50) score += 15;
-    else if (ratio > 10) score += 5;
+    if (ratio > 100) {
+      score += 25;
+      insights.whyGoodClient.push('High engagement ratio indicates engaged audience');
+    } else if (ratio > 50) {
+      score += 15;
+    } else if (ratio > 10) {
+      score += 5;
+    } else {
+      insights.whatsWrong.push('Low engagement - videos not resonating with audience');
+      insights.whatToPitch.push('Content strategy consultation to improve engagement');
+    }
+  }
+
+  // Growth potential - smaller channels have more room to grow
+  if (subs < 10000) {
+    score += 20;
+    insights.whyGoodClient.push('Smaller channel with growth potential');
+  } else if (subs < 100000) {
+    score += 10;
+  }
+
+  // Upload consistency
+  if (videos && videos.length >= 5) {
+    const dates = videos.map(v => new Date(v.publishedAt).getTime()).sort((a,b) => b-a);
+    const intervals = [];
+    for (let i = 0; i < dates.length - 1; i++) {
+      intervals.push(dates[i] - dates[i+1]);
+    }
+    const avgInterval = intervals.reduce((a,b) => a+b, 0) / intervals.length / (1000*60*60*24); // days
+    if (avgInterval < 14) {
+      score += 15;
+      insights.whyGoodClient.push('Consistent uploader - posts frequently');
+    } else if (avgInterval < 30) {
+      score += 10;
+    } else {
+      insights.whatsWrong.push('Inconsistent upload schedule');
+      insights.whatToPitch.push('Content calendar planning service');
+    }
   }
 
   // Contact info score
   const contacts = extractContacts(channel.description);
-  if (contacts.emails.length > 0) score += 20;
+  if (contacts.emails.length > 0) {
+    score += 20;
+    insights.whyGoodClient.push('Already has contact info - easy to reach');
+  }
   if (contacts.instagrams.length > 0) score += 10;
-  if (contacts.websites.length === 0) score += 15; // No website = better lead
+  if (contacts.websites.length === 0) {
+    score += 15;
+    insights.whyGoodClient.push('No website - opportunity for web design services');
+    insights.whatToPitch.push('Professional website creation');
+  } else {
+    insights.whatsWrong.push('Already has website - may not need design help');
+  }
 
-  return Math.min(score, 100);
+  // Monetization signals - assume based on subs and video count
+  if (subs > 1000 && videoCount > 50) {
+    score += 10;
+    insights.whyGoodClient.push('Likely monetized or close to it');
+    insights.whatToPitch.push('Advanced monetization strategies');
+  }
+
+  const finalScore = Math.min(score, 100);
+  const chance = Math.round(finalScore * 0.82); // Rough conversion to percentage
+
+  return {
+    score: finalScore,
+    chance: chance,
+    insights: insights
+  };
 }
 
 async function ytFetch(url) {
@@ -268,7 +344,7 @@ app.post('/search', async (req, res) => {
       if (filters.requireWebsite && contacts.websites.length === 0) continue;
       if (filters.noWebsite && contacts.websites.length > 0) continue;
 
-      const score = scoreCreator({ subscriberCount: subs, viewCount: views, description: desc }, videos);
+      const scoreData = scoreCreator({ subscriberCount: subs, viewCount: views, description: desc }, videos);
 
       creators.push({
         channelId: channel.id,
@@ -282,7 +358,9 @@ app.post('/search', async (req, res) => {
         country: channel.snippet?.country,
         contacts,
         latestVideos: videos,
-        score,
+        score: scoreData.score,
+        chance: scoreData.chance,
+        insights: scoreData.insights,
         lastUpload: videos[0]?.publishedAt || null,
       });
     }

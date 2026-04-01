@@ -6,9 +6,9 @@ const SORT_OPTIONS = [
   { key: 'lastUpload', label: 'Latest Upload' },
 ]
 
-function ScoreBadge({ score }) {
+function ScoreBadge({ score, chance }) {
   const cls = score >= 70 ? 'score-high' : score >= 40 ? 'score-mid' : 'score-low'
-  return <span className={`score-badge ${cls}`}>{score}</span>
+  return <span className={`score-badge ${cls}`}>{chance}% chance</span>
 }
 
 function formatSubs(n) {
@@ -109,7 +109,7 @@ function CreatorRow({ creator, index }) {
           {formatDate(creator.lastUpload)}
         </td>
         <td className="py-3 px-4">
-          <ScoreBadge score={creator.score} />
+          <ScoreBadge score={creator.score} chance={creator.chance} />
         </td>
         <td className="py-3 px-4 text-xs text-gray-600 font-mono">
           {expanded ? '▲' : '▼'}
@@ -155,6 +155,35 @@ function CreatorRow({ creator, index }) {
                       ▶ {v.title} <span className="text-gray-700">({formatDate(v.publishedAt)})</span>
                     </a>
                   ))}
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-yellow-900/20">
+              <div className="text-xs text-yellow-700 uppercase tracking-widest mb-2 font-mono">AI Insights</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <div className="text-sm font-semibold text-green-400 mb-1">Why a Good Client</div>
+                  <ul className="text-xs text-gray-400 space-y-1">
+                    {(creator.insights?.whyGoodClient || []).map((item, i) => (
+                      <li key={i}>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-blue-400 mb-1">What to Pitch</div>
+                  <ul className="text-xs text-gray-400 space-y-1">
+                    {(creator.insights?.whatToPitch || []).map((item, i) => (
+                      <li key={i}>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-red-400 mb-1">What's Wrong</div>
+                  <ul className="text-xs text-gray-400 space-y-1">
+                    {(creator.insights?.whatsWrong || []).map((item, i) => (
+                      <li key={i}>• {item}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -209,7 +238,7 @@ export default function CreatorTable({ creators, isPro, totalHidden, onUpgrade }
                 className="py-3 px-4 text-left text-yellow-600 font-mono text-xs uppercase tracking-widest cursor-pointer hover:text-yellow-400"
                 onClick={() => toggleSort('score')}
               >
-                Score {sortKey === 'score' ? (sortDir === 'desc' ? '↓' : '↑') : '↕'}
+                Client Score {sortKey === 'score' ? (sortDir === 'desc' ? '↓' : '↑') : '↕'}
               </th>
               <th className="py-3 px-4"></th>
             </tr>
